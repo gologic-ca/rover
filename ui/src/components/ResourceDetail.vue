@@ -7,64 +7,38 @@
       </div>
       <div v-else>
         <dd class="key">{{ primitiveType }}</dd>
-        <span
-          class="tag is-small resource-action"
-          v-if="resourceChange.action"
-          >{{ resourceChange.action }}</span
-        >
+        <span class="tag is-small resource-action" v-if="resourceChange.action">{{ resourceChange.action }}</span>
         <dt class="value resource-id">
           {{ resource.id }}
-          <button
-            class="copy-button"
-            @click="copyText(resource.id, 'rid')"
-            ref="rid"
-          >
+          <button class="copy-button" @click="copyText(resource.id, 'rid')" ref="rid">
             Copy
           </button>
         </dt>
 
         <!-- <dd class="key">Resource Type</dd>
         <dt class="value">{{ resource.resource_type }}</dt>
-c
+
         <dd class="key">Resource Name</dd>
         <dt class="value">{{ resource.resource_name }}</dt> -->
 
         <nav class="tabs is-full">
-          <a
-            @click="selectTab('config')"
-            :class="{ active: curTab === 'config' }"
-            >Config</a
-          >
-          <a
-            @click="selectTab('current')"
-            :class="{ active: curTab === 'current', disabled: hasNoState }"
-            >Current State</a
-          >
-          <a
-            @click="selectTab('proposed')"
-            :class="{ active: curTab === 'proposed', disabled: hasNoState }"
-            >Proposed State</a
-          >
+          <a @click="selectTab('config')" :class="{ active: curTab === 'config' }">Config</a>
+          <a @click="selectTab('current')" :class="{ active: curTab === 'current', disabled: hasNoState }">Current
+            State</a>
+          <a @click="selectTab('proposed')" :class="{ active: curTab === 'proposed', disabled: hasNoState }">Proposed
+            State</a>
         </nav>
 
         <div class="tab-container" v-if="curTab === 'config'">
           <!-- {{ resourceConfig }} -->
-          <span
-            v-if="
-              resourceConfig.isChild == 'rover-for-each-child-resource-true'
-            "
-            class="is-child-resource"
-            >Please check parent resource</span
-          >
+          <span v-if="resourceConfig.isChild == 'rover-for-each-child-resource-true'
+            " class="is-child-resource">Please check parent resource</span>
           <div v-for="(val, k) in resourceConfig" :key="k" v-else>
             <dd class="key">{{ k }}</dd>
             <dt class="value">
               <span>{{ getConfigValue(val) }}</span>
-              <button
-                class="copy-button"
-                @click="copyText(getConfigValue(val), `${resource.id}-${k}`)"
-                :ref="`${resource.id}-${k}`"
-              >
+              <button class="copy-button" @click="copyText(getConfigValue(val), `${resource.id}-${k}`)"
+                :ref="`${resource.id}-${k}`">
                 Copy
               </button>
             </dt>
@@ -77,11 +51,8 @@ c
               <dd class="key">{{ k }}</dd>
               <dt class="value">
                 {{ getBeforeValue(val) }}
-                <button
-                  class="copy-button"
-                  @click="copyText(getBeforeValue(val), `${resource.id}-${k}`)"
-                  :ref="`${resource.id}-${k}`"
-                >
+                <button class="copy-button" @click="copyText(getBeforeValue(val), `${resource.id}-${k}`)"
+                  :ref="`${resource.id}-${k}`">
                   Copy
                 </button>
               </dt>
@@ -95,17 +66,10 @@ c
 
           <div v-for="(val, k) in resourceChange.after" :key="k">
             <dd class="key">{{ k }}</dd>
-            <dt
-              class="value"
-              v-if="val"
-              :class="{ 'unknown-value': val.unknown }"
-            >
+            <dt class="value" v-if="val" :class="{ 'unknown-value': val.unknown }">
               {{ val.unknown ? "Value Unknown" : val }}
-              <button
-                class="copy-button"
-                @click="copyText(getBeforeValue(val), `${resource.id}-${k}`)"
-                :ref="`${resource.id}-${k}`"
-              >
+              <button class="copy-button" @click="copyText(getBeforeValue(val), `${resource.id}-${k}`)"
+                :ref="`${resource.id}-${k}`">
                 Copy
               </button>
             </dt>
@@ -200,7 +164,7 @@ export default {
 
       return {};
 
-      
+
       // Resource
       /*if (isChild) return { isChild: "rover-for-each-child-resource-true" };
       if (model.resources[resourceID] && model.resources[resourceID].config) {
@@ -221,9 +185,6 @@ export default {
       return {};*/
     },
     getResourceChange(resourceID, model) {
-      // console.log(`resourceID: ${resourceID}`);
-      // console.log(model);
-
       let rc = {};
       if (resourceID.includes("var.")) {
         return (rc = {});
@@ -255,7 +216,7 @@ export default {
             rc.after["value"] = { unknown: true };
           }
 
-          // console.log(rc);
+          //console.log(rc);
 
           return rc;
         }
@@ -351,7 +312,6 @@ export default {
     },
     resourceConfig() {
 
-
       return this.getResourceConfig(this.resource.id, this.overview, this.isChild)
 
       /*if (this.resource.id === "") {
@@ -403,7 +363,6 @@ export default {
     } else {
       axios.get(`/api/rso`).then((response) => {
         this.overview = response.data;
-        //console.log(this.overview);
       });
     }
   },
@@ -417,22 +376,28 @@ export default {
   min-width: 0;
   /* background-color: #292a34; */
 }
+
 .tab-container {
   max-height: 70vh;
   overflow: scroll;
 }
+
 fieldset {
   margin-bottom: 2em;
 }
+
 .tabs a:hover {
   cursor: pointer;
 }
+
 .resource-detail {
   padding: 1em 0;
 }
+
 .tab-container {
   padding: 1em 0;
 }
+
 .tabs .disabled:hover {
   cursor: not-allowed;
   border-bottom: 4px solid var(--color-lightGrey);
@@ -504,5 +469,21 @@ dt.value {
 
 .copy-button:hover {
   cursor: pointer;
+}
+
+.node {
+  width: 14em;
+  font-size: 2em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 0.5em 0.5em;
+  border-radius: 0.25em;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border: 5px solid lightgray;
 }
 </style>

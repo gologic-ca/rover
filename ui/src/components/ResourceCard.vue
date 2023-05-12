@@ -1,24 +1,15 @@
 <template>
-  <div
-    class="card resource-main"
-    :class="[
-      isChild ? 'child' : '',
-      `resource-card ${content.type}`,
-      content.change_action != null ? content.change_action : '',
-      content.change_action != null ? '' : 'resource-type-card',
-    ]"
-  >
+  <div class="card resource-main" :class="[
+    isChild ? 'child' : '',
+    `resource-card ${content.type}`,
+    content.change_action != null ? content.change_action : '',
+    content.change_action != null ? '' : 'resource-type-card',
+  ]">
     <div class="row" @click="handleClick(id)">
       <div class="col col-6 resource-col">
         <!-- Multiple Resources -->
-        <p
-          class="is-small resource-action"
-          @click="showChildren = !showChildren"
-        >
-          <img
-            :src="expandIcons[expandIcon]"
-            class="multi-tag resource-action-icon"
-          />
+        <p class="is-small resource-action" @click="showChildren = !showChildren">
+          <img :src="expandIcons[expandIcon]" class="multi-tag resource-action-icon" />
         </p>
         <!-- {{ content }} -->
         <!-- Resource Action -->
@@ -36,11 +27,7 @@
       <div class="col col-4">
         <!-- Provider Icons -->
         <template v-if="resourceProvider">
-          <img
-            class="provider-icon"
-            :src="providerIcon[resourceProvider]"
-            v-if="providerIcon[resourceProvider]"
-          />
+          <img class="provider-icon" :src="providerIcon[resourceProvider]" v-if="providerIcon[resourceProvider]" />
           <span class="tag is-small provider-icon-tag" v-else>
             {{ resourceProvider[0] }}
           </span>
@@ -56,14 +43,8 @@
     </div>
     <template v-for="resource in sortedResources">
       <transition-group name="resources" :key="resource[0]">
-        <resource-card
-          :key="resource[0]"
-          :id="resource[0]"
-          :content="resource[1]"
-          :isChild="false"
-          v-if="showChildren"
-          :handle-click="handleClick"
-        />
+        <resource-card :key="resource[0]" :id="resource[0]" :content="resource[1]" :isChild="false" v-if="showChildren"
+          :handle-click="handleClick" />
       </transition-group>
     </template>
   </div>
@@ -80,7 +61,7 @@ export default {
   },
   data() {
     return {
-      showChildren: false,
+      showChildren: true,
       providerIcon: {
         aws: require("@/assets/provider-icons/aws.png"),
         azure: require("@/assets/provider-icons/azure.png"),
@@ -288,7 +269,11 @@ export default {
   overflow: hidden;
 }
 
-.resources-enter, .resources-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.resources-enter,
+.resources-leave-to
+
+/* .fade-leave-active below version 2.1.8 */
+  {
   height: 0;
   padding: 0;
   margin: 0;

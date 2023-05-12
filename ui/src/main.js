@@ -6,7 +6,8 @@ import VueMeta from 'vue-meta';
 Vue.use(VueCytoscape);
 Vue.use(VueMeta);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
 
 new Vue({
   render: h => h(App),

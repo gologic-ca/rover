@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <main-nav @saveGraph="saveGraph" />
     <div class="row">
       <div class="col col-4-lg">
         <fieldset>
@@ -37,11 +36,7 @@
         <resource-detail :resourceID="resourceID" />
       </div>
       <div class="col col-8-lg">
-        <graph
-          ref="filegraph"
-          :displayGraph="displayGraph"
-          v-on:getNode="selectResource"
-        />
+        <graph ref="filegraph" :displayGraph="displayGraph" v-on:getNode="selectResource" />
         <explorer @selectResource="selectResource" />
       </div>
     </div>
@@ -49,10 +44,7 @@
 </template>
 
 <script>
-import MainNav from "@/components/MainNav.vue";
 import ResourceDetail from "@/components/ResourceDetail.vue";
-import Graph from "@/components/Graph/Graph.vue";
-// import SampleGraph from "@/assets/eks-graph.json";
 import Explorer from "@/components/Explorer.vue";
 
 export default {
@@ -61,8 +53,6 @@ export default {
     title: "Rover | Terraform Visualization",
   },
   components: {
-    MainNav,
-    Graph,
     Explorer,
     ResourceDetail,
   },
@@ -100,6 +90,78 @@ export default {
   margin: 0 1%;
   width: 48%;
   font-size: 0.9em;
+}
+
+.node:hover {
+  transform: scale(1.02);
+}
+
+.resource-type {
+  width: 20em;
+  font-size: 2em;
+  height: 100%;
+}
+
+.create {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: 0;
+}
+
+.delete {
+  /* background-color: #ffe9e9;
+  border: 5px solid #e40707; */
+  background-color: #e40707;
+  color: white;
+  font-weight: bold;
+  border: 0;
+}
+
+.update {
+  /* background-color: #e1f0ff;
+  border: 5px solid #1d7ada; */
+  background-color: #1d7ada;
+  color: white;
+  font-weight: bold;
+  border: 0;
+}
+
+.replace {
+  /* background-color: #fff7e0;
+  border: 5px solid #ffc107; */
+  background-color: #ffc107;
+  color: black;
+  font-weight: bold;
+  border: 0;
+}
+
+.output {
+  background-color: #fff7e0;
+  border: 5px solid #ffc107;
+  color: black;
+  font-weight: bold;
+}
+
+.variable {
+  background-color: #e1f0ff;
+  border: 5px solid #1d7ada;
+  color: black;
+  font-weight: bold;
+}
+
+.data {
+  background-color: #ffecec;
+  border: 5px solid #dc477d;
+  color: black;
+  font-weight: bold;
+}
+
+.locals {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border: 0;
 }
 
 .module {
