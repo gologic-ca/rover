@@ -94,7 +94,7 @@ func (r *rover) addNodes(base string, parent string, nodeMap map[string]Node, re
 
 	for id, re := range resources {
 
-		if re.Type == ResourceTypeResource || re.Type == ResourceTypeData {
+		if re.Type == ResourceTypeResource {
 
 			pid := parent
 
@@ -178,11 +178,6 @@ func (r *rover) addNodes(base string, parent string, nodeMap map[string]Node, re
 		} else {
 
 			pid := parent
-
-			if nodeMap[parent].Data.Type == ResourceTypeFile {
-				pid = strings.TrimSuffix(pid, nodeMap[parent].Data.Label)
-				pid = strings.TrimSuffix(pid, ".")
-			}
 
 			ls := strings.Split(id, ".")
 			label := ls[len(ls)-1]
@@ -357,14 +352,6 @@ func getResourceColor(t ResourceType) string {
 	switch t {
 	case ResourceTypeModule:
 		return MODULE_COLOR
-	case ResourceTypeData:
-		return DATA_COLOR
-	case ResourceTypeOutput:
-		return OUTPUT_COLOR
-	case ResourceTypeVariable:
-		return VARIABLE_COLOR
-	case ResourceTypeLocal:
-		return LOCAL_COLOR
 	}
 	return RESOURCE_COLOR
 }
@@ -385,16 +372,8 @@ func getPrimitiveType(resourceType string) string {
 func getResourceClass(resourceType ResourceType) string {
 	switch resourceType {
 
-	case ResourceTypeData:
-		return "data-type"
-	case ResourceTypeOutput:
-		return "output"
-	case ResourceTypeVariable:
-		return "variable"
 	case ResourceTypeFile:
 		return "fname"
-	case ResourceTypeLocal:
-		return "locals"
 	case ResourceTypeModule:
 		return "module"
 	}

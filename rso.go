@@ -3,14 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
-	tfjson "github.com/hashicorp/terraform-json"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
+	tfjson "github.com/hashicorp/terraform-json"
 )
 
 // ResourcesOverview represents the root module
@@ -169,11 +170,7 @@ func (r *rover) PopulateModuleState(rso *ResourcesOverview, module *tfjson.State
 			// Create resource if doesn't exist
 			if _, ok := rs[id]; !ok {
 				rs[id] = &StateOverview{}
-				if rst.Mode == "data" {
-					rs[id].Type = ResourceTypeData
-				} else {
-					rs[id].Type = ResourceTypeResource
-				}
+				rs[id].Type = ResourceTypeResource
 			}
 
 			if _, ok := rs[parent]; !ok {
@@ -191,12 +188,7 @@ func (r *rover) PopulateModuleState(rso *ResourcesOverview, module *tfjson.State
 				if _, ok := rs[parent]; !ok {
 					rs[parent] = &StateOverview{}
 					rs[parent].Children = make(map[string]*StateOverview)
-					if rst.Mode == "data" {
-						rs[parent].Type = ResourceTypeData
-					} else {
-						rs[parent].Type = ResourceTypeResource
-					}
-
+					rs[parent].Type = ResourceTypeResource
 				}
 
 				rs[module.Address].Children[parent] = rs[parent]
@@ -323,30 +315,6 @@ func (r *rover) GenerateResourceOverview() error {
 	// reGetParent := regexp.MustCompile(`^\w+\.\w+`)
 	//reIsChild := regexp.MustCompile(`^\w+\.[\w-]+[\.\[]`)
 
-	// Loop through output changes
-	for outputName, output := range r.Plan.OutputChanges {
-		if _, ok := rs[outputName]; !ok {
-			rs[outputName] = &StateOverview{}
-		}
-
-		// If before/after sensitive, set value to "Sensitive Value"
-		if !r.ShowSensitive {
-			if output.BeforeSensitive != nil {
-				if output.BeforeSensitive.(bool) {
-					output.Before = "Sensitive Value"
-				}
-			}
-			if output.AfterSensitive != nil {
-				if output.AfterSensitive.(bool) {
-					output.After = "Sensitive Value"
-				}
-			}
-		}
-
-		rs[outputName].Change = *output
-		rs[outputName].Type = ResourceTypeOutput
-	}
-
 	// Loop through resource changes
 	for _, resource := range r.Plan.ResourceChanges {
 		id := resource.Address
@@ -365,11 +333,7 @@ func (r *rover) GenerateResourceOverview() error {
 			// Create resource if doesn't exist
 			if _, ok := rs[id]; !ok {
 				rs[id] = &StateOverview{}
-				if resource.Mode == "data" {
-					rs[id].Type = ResourceTypeData
-				} else {
-					rs[id].Type = ResourceTypeResource
-				}
+				rs[id].Type = ResourceTypeResource
 				rs[parent].Children[id] = rs[id]
 			}
 			rs[id].Change = *resource.Change
